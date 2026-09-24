@@ -20,3 +20,6 @@ iosApp/*.xcodeproj/
 iosApp/project.local.yml
 __pycache__/
 *.pyc
+
+# Generated local verification projects
+/tests/headless-ios/*.xcodeproj/

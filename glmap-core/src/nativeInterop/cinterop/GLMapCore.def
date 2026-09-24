@@ -1,0 +1,14 @@
+language = Objective-C
+modules = GLMapCore
+excludeDependentModules = true
+compilerOpts = -fmodules
+package = globus.native.core
+---
+@import GLMapCore;
+// Wrapper-local adapter over public SDK APIs. The builder consumes the block
+// synchronously and owns the projected points when this function returns.
+static inline void GLMapLabAddLineLonLat(GeometryBuilder *builder, const double *coordinates, NSUInteger count) {
+    [builder addLine:count callback:^GLMapPoint(NSUInteger index) {
+        return GLMapPointMakeFromGeoCoordinates(coordinates[index * 2 + 1], coordinates[index * 2]);
+    }];
+}

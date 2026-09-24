@@ -1,4 +1,9 @@
 package software.globus.lab.kmp
+import globus.glmap.core.*
+import globus.glmap.*
+import globus.glsearch.*
+import globus.glroute.*
+
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext

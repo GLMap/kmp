@@ -1,0 +1,5 @@
+language = Objective-C
+modules = GLSearch
+excludeDependentModules = true
+compilerOpts = -fmodules
+package = globus.native.search

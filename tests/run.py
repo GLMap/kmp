@@ -19,9 +19,9 @@ def run_kotlin(source):
     runtime=[jar('org.jetbrains.kotlin','kotlin-stdlib',version),jar('org.jetbrains','annotations','13.0')]
     path=OUT/'Checks.kt';path.write_text(source)
     subprocess.run(['java','-cp',os.pathsep.join([compiler,*deps,*runtime]),'org.jetbrains.kotlin.cli.jvm.K2JVMCompiler','-no-stdlib','-no-reflect','-classpath',os.pathsep.join(runtime),'-d',str(OUT/'checks.jar'),str(path)],check=True)
-    subprocess.run(['java','-cp',os.pathsep.join([str(OUT/'checks.jar'),*runtime]),'software.globus.lab.kmp.ChecksKt'],check=True)
+    subprocess.run(['java','-cp',os.pathsep.join([str(OUT/'checks.jar'),*runtime]),'globus.glmap.ChecksKt'],check=True)
 
 if __name__=='__main__':
-    production=(ROOT/'shared/src/commonMain/kotlin/software/globus/lab/kmp/DrawableLifetime.kt').read_text()
+    production=(ROOT/'glmap/src/commonMain/kotlin/globus/glmap/DrawableLifetime.kt').read_text()
     checks=(ROOT/'tests/DrawableLifetimeChecks.kt').read_text().replace('package software.globus.lab.kmp', '')
     run_kotlin(production+'\n'+checks)

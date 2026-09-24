@@ -1,1 +1,114 @@
-{"schema":1,"experiment":"kmp-stage-a-api","platform":"android","startedUtc":"2026-09-24T10:03:09.327775Z","completedUtc":"2026-09-24T10:03:11.958417Z","passed":true,"tests":[{"name":"Fixture and native snapshot","passed":true,"milliseconds":19.238791,"detail":{"latitude":48.99175251769659,"longitude":15.99609375,"zoom":5.0,"scale":32.0,"angle":0.0,"pitch":0.0,"originX":0.5,"originY":0.5}},{"name":"Camera and 20 concurrent captures","passed":true,"milliseconds":27.133,"detail":{"latitude":48.208195516057934,"longitude":16.373730272243026,"zoom":12.0,"scale":4096.0,"angle":24.0,"pitch":20.0,"originX":0.5,"originY":0.5}},{"name":"Packed, GeoJSON, restyle, invalid input and clear","passed":true,"milliseconds":185.350375,"detail":{"points":10000,"inputCopied":true}},{"name":"Two maps, scoped handles and 60 overlapping updates","passed":true,"milliseconds":296.1135,"detail":{"ready":5,"superseded":55,"removal":"Cancelled"}},{"name":"Drawable handles reject mutations after removal and map disposal","passed":true,"milliseconds":136.651834,"detail":{"handles":5}},{"name":"Navigate away and restore captured camera","passed":true,"milliseconds":167.256,"detail":{"latitude":48.20811024232784,"longitude":16.373748779296875,"zoom":12.0,"scale":4096.0,"angle":0.0,"pitch":0.0,"originX":0.5,"originY":0.5}},{"name":"Ten unmount and recreation cycles","passed":true,"milliseconds":1638.605001,"detail":{"cycles":10}},{"name":"Dispose settles pending updates and rejects later calls","passed":true,"milliseconds":159.969792,"detail":{"latitude":48.99175251769659,"longitude":15.99609375,"zoom":5.0,"scale":32.0,"angle":0.0,"pitch":0.0,"originX":0.5,"originY":0.5}}],"nativeGestures":"not exercised by the common API suite"}
+{
+  "schema": 1,
+  "experiment": "kmp-stage-a-api",
+  "platform": "android",
+  "startedUtc": "2026-09-24T13:32:54.864036Z",
+  "completedUtc": "2026-09-24T13:32:57.802905Z",
+  "passed": true,
+  "tests": [
+    {
+      "name": "Fixture and native snapshot",
+      "passed": true,
+      "milliseconds": 12.553,
+      "detail": {
+        "latitude": 48.99175251769659,
+        "longitude": 15.99609375,
+        "zoom": 5.0,
+        "scale": 32.0,
+        "angle": 0.0,
+        "pitch": 0.0,
+        "originX": 0.5,
+        "originY": 0.5
+      }
+    },
+    {
+      "name": "Camera and 20 concurrent captures",
+      "passed": true,
+      "milliseconds": 33.654709,
+      "detail": {
+        "latitude": 48.208195516057934,
+        "longitude": 16.373730272243026,
+        "zoom": 12.0,
+        "scale": 4096.0,
+        "angle": 24.0,
+        "pitch": 20.0,
+        "originX": 0.5,
+        "originY": 0.5
+      }
+    },
+    {
+      "name": "Packed, GeoJSON, restyle, invalid input and clear",
+      "passed": true,
+      "milliseconds": 156.63225,
+      "detail": {
+        "points": 10000,
+        "inputCopied": true
+      }
+    },
+    {
+      "name": "Two maps, scoped handles and 60 overlapping updates",
+      "passed": true,
+      "milliseconds": 282.931042,
+      "detail": {
+        "ready": 6,
+        "superseded": 54,
+        "removal": "Cancelled"
+      }
+    },
+    {
+      "name": "Drawable handles reject mutations after removal and map disposal",
+      "passed": true,
+      "milliseconds": 134.89175,
+      "detail": {
+        "handles": 5
+      }
+    },
+    {
+      "name": "Services exchange Core geometry and state with Map",
+      "passed": true,
+      "milliseconds": 249.708084,
+      "detail": {
+        "independentModules": true
+      }
+    },
+    {
+      "name": "Navigate away and restore captured camera",
+      "passed": true,
+      "milliseconds": 167.830875,
+      "detail": {
+        "latitude": 48.20811024232784,
+        "longitude": 16.373748779296875,
+        "zoom": 12.0,
+        "scale": 4096.0,
+        "angle": 0.0,
+        "pitch": 0.0,
+        "originX": 0.5,
+        "originY": 0.5
+      }
+    },
+    {
+      "name": "Ten unmount and recreation cycles",
+      "passed": true,
+      "milliseconds": 1732.649876,
+      "detail": {
+        "cycles": 10
+      }
+    },
+    {
+      "name": "Dispose settles pending updates and rejects later calls",
+      "passed": true,
+      "milliseconds": 167.738542,
+      "detail": {
+        "latitude": 48.99175251769659,
+        "longitude": 15.99609375,
+        "zoom": 5.0,
+        "scale": 32.0,
+        "angle": 0.0,
+        "pitch": 0.0,
+        "originX": 0.5,
+        "originY": 0.5
+      }
+    }
+  ],
+  "nativeGestures": "not exercised by the common API suite"
+}

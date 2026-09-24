@@ -1,0 +1,5 @@
+language = Objective-C
+modules = GLMap
+excludeDependentModules = true
+compilerOpts = -fmodules
+package = globus.native.map

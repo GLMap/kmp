@@ -1,0 +1,5 @@
+language = Objective-C
+modules = GLRoute
+excludeDependentModules = true
+compilerOpts = -fmodules
+package = globus.native.route

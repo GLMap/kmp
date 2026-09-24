@@ -1,6 +1,6 @@
 import SwiftUI
 import GLMapCore
-import GLMapSwift
+import GLMapCoreSwift
 import GLMapKmpDemo
 
 @main

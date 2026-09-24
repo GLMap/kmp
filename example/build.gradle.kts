@@ -21,7 +21,10 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":shared"))
+            implementation(project(":glmap-core-kmp"))
+            implementation(project(":glmap-kmp"))
+            implementation(project(":glsearch-kmp"))
+            implementation(project(":glroute-kmp"))
             implementation(compose.runtime); implementation(compose.foundation); implementation(compose.material); implementation(compose.ui)
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")

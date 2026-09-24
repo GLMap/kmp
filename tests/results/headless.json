@@ -1,0 +1,36 @@
+{
+  "core": {
+    "android": "PASS",
+    "ios": "PASS",
+    "libraries": [
+      "lib/arm64-v8a/libglmapcore.so"
+    ],
+    "frameworks": [
+      "GLMapCore.framework"
+    ]
+  },
+  "search": {
+    "android": "PASS",
+    "ios": "PASS",
+    "libraries": [
+      "lib/arm64-v8a/libglmapcore.so",
+      "lib/arm64-v8a/libglsearch.so"
+    ],
+    "frameworks": [
+      "GLMapCore.framework",
+      "GLSearch.framework"
+    ]
+  },
+  "route": {
+    "android": "PASS",
+    "ios": "PASS",
+    "libraries": [
+      "lib/arm64-v8a/libglmapcore.so",
+      "lib/arm64-v8a/libglroute.so"
+    ],
+    "frameworks": [
+      "GLMapCore.framework",
+      "GLRoute.framework"
+    ]
+  }
+}

@@ -1,4 +1,9 @@
 package software.globus.lab.kmp
+import globus.glmap.core.*
+import globus.glmap.*
+import globus.glsearch.*
+import globus.glroute.*
+
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,6 +32,7 @@ import kotlinx.serialization.json.Json
 }
 
 @Composable fun App(onOpenDemos: (() -> Unit)? = null) {
+    val sdk=rememberSdk()
     val scope=rememberCoroutineScope()
     val focus=LocalFocusManager.current
     var status by remember { mutableStateOf("Starting map…") }
@@ -60,7 +66,7 @@ import kotlinx.serialization.json.Json
         if (running) return
         running=true; status="Running API suite…"
         scope.launch {
-            try { status=runApiChecks(host) }
+            try { status=runApiChecks(host,sdk) }
             catch (error: Exception) { status="FAIL: $error" }
             finally { running=false }
         }

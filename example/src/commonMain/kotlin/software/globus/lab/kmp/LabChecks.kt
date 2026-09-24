@@ -1,4 +1,9 @@
 package software.globus.lab.kmp
+import globus.glmap.core.*
+import globus.glmap.*
+import globus.glsearch.*
+import globus.glroute.*
+
 
 import kotlinx.coroutines.*
 import kotlinx.serialization.encodeToString
@@ -31,7 +36,7 @@ internal fun checkGeometry(map: MapController, layer: VectorLayer, values: Doubl
         check(abs(pair[1].jsonPrimitive.double-values[2*i+1])<0.000001)
     }
 }
-internal suspend fun runApiChecks(host: LabHost): String {
+internal suspend fun runApiChecks(host: LabHost, sdk:GLMapSdk): String {
     val tests = mutableListOf<JsonObject>()
     val start = Clock.System.now().toString()
     var error: String? = null
@@ -112,6 +117,26 @@ internal suspend fun runApiChecks(host: LabHost): String {
             check(runCatching { late.append(point, 0xFFFF0000) }.exceptionOrNull()?.message == "map_disposed")
             late.remove()
             buildJsonObject { put("handles", handles.size) }
+        }
+        test("Services exchange Core geometry and state with Map") {
+            sdk.initialize("")
+            sdk.addBundledMap("Montenegro.vm")
+            val center=GeoPoint(42.4341,19.26)
+            val found=sdk.search(SearchQuery("Podgorica",center,offline=true,autocomplete=false))
+            check(found.places.isNotEmpty())
+            val map=host.current()
+            map.moveCamera(center=center,zoom=14.0)
+            val markers=map.addMarkers(found,SvgImage("pin.svg"),4)
+            found.close() // Map retains its own Core vector wrappers.
+            val screen=map.toDisplay(center)
+            map.objectAt(MapTap(center,screen.x,screen.y))
+            val route=sdk.buildRoute(listOf(RouteStep(doubleArrayOf(19.25,42.43,19.27,42.44),1,"Continue",30.0)))
+            val track=map.addTrack("{width:4pt;}",3)
+            track.setRoute(route,0xFFFF0000)
+            val arrow=map.addLineArrow("{width:4pt;}",SvgImage("route-maneuver-head.svg"),5)
+            arrow.setManeuver(route.maneuvers.first())
+            arrow.remove();track.remove();route.close();markers.remove()
+            buildJsonObject { put("independentModules",true) }
         }
         test("Navigate away and restore captured camera") {
             host.current().setCamera(Camera(48.2082,16.3738,12.0))
