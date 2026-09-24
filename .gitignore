@@ -16,8 +16,8 @@ local.properties
 .env.*
 *.xcuserstate
 xcuserdata/
-iosApp/*.xcodeproj/
-iosApp/project.local.yml
+*.xcodeproj/
+**/project.local.yml
 __pycache__/
 *.pyc
 

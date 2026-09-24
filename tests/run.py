@@ -23,5 +23,5 @@ def run_kotlin(source):
 
 if __name__=='__main__':
     production=(ROOT/'glmap/src/commonMain/kotlin/globus/glmap/DrawableLifetime.kt').read_text()
-    checks=(ROOT/'tests/DrawableLifetimeChecks.kt').read_text().replace('package software.globus.lab.kmp', '')
+    checks=(ROOT/'tests/DrawableLifetimeChecks.kt').read_text().replace('package globus.glmap', '')
     run_kotlin(production+'\n'+checks)

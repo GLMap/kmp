@@ -1,4 +1,4 @@
-package software.globus.lab.kmp
+package globus.glmap
 
 fun main() {
     var disposed = false

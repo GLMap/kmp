@@ -1,35 +1,155 @@
-# Modular KMP verification — 2026-09-24
+# Kotlin Multiplatform SDK verification
 
-Native baseline: `515481f9f`; frozen Swift package: `04f1a99`.
+## Host checks
 
-Completed:
+Use the toolchain in [README.md](README.md#requirements). From the repository root:
 
-- Four independently published module variants under `globus:*‑kmp`, with Core-only
-  inter-product dependencies. Core/Search/Route do **not** depend on Compose.
-- Android Release/R8 builds; iOS device and simulator Kotlin frameworks build.
-- Combined API suite adds a ninth scenario exercising Search results retained by Map,
-  Core-state POI queries, Route track data and maneuver line handoff. Fresh final
-  platform results are retained under `tests/results/`.
-- `scripts/test-headless.py` builds and runs Core, Search and Route independently on
-  both platforms. All **six variants pass**; native renderer absence is checked both
-  at runtime and in packaged artifacts.
-- Route runtime dependency resolution contains neither Compose nor the Map SDK.
-- Ownership and controlled download regressions pass.
-- All twelve Android/iOS platform publications plus common metadata are generated in
-  the local `build/maven/` verification repository; no remote publishing occurs.
-- An unsigned modular device archive succeeds.
+```sh
+python3 scripts/check-modules.py
+python3 tests/example_layout.py
+python3 tests/run.py
+python3 tests/downloads.py
+```
 
-Runtime testing caught a distinction between Gradle project identity and publication
-artifact ID: projects also need the `-kmp` identity, or conflict resolution can select
-native `globus:glmap` and omit the wrapper classes. Android resource namespaces are
-also separate from native SDK namespaces. A stale result file was explicitly rejected;
-final Android results are from a fresh Release/R8 launch after correcting this.
+The module check enforces Core-only dependencies and excludes Compose from
+Core/Search/Route. The controlled tests compile current Kotlin production code
+against small platform doubles. They use Kotlin 2.4.20 and coroutines 1.10.2 from
+the Gradle cache; resolve the project's dependencies first on a fresh machine.
 
-Swift cinterop declarations are split per framework and reuse Core bindings. Published
-shared iOS metadata uses cinterop commonization. `example/` owns Compose conveniences,
-catalogs and benchmarks, not the service libraries.
+`tests/example_layout.py` checks the shared entry points, Gradle module paths,
+platform identifiers, shared assets and documented build commands without a device.
+`tests/run.py` covers drawable ownership, removal, disposal and repeated cleanup.
+The [download regressions](tests/downloads/README.md) cover cancellation, late
+callbacks, file ownership and retry. These are host tests, not emulator/simulator
+runs or authenticated download tests.
 
-Remaining: clean remote resolution after native release, physical/signed device runs,
-full service-catalog and authenticated offline-relaunch tests, publishing/license
-approval. Toolchain warnings about duplicate Compose/AndroidX metadata and expect/actual
-classes are retained; they did not fail these checks.
+## Native API and lifecycle checks
+
+Build and launch the [demo](README.md#run-the-demo) on each platform. The initial
+screen runs the API checks; **Run tests** repeats them. Keep a fresh result for
+each run rather than reusing a result from an older installation.
+
+The suite in `example/` covers camera/state operations, vector updates, drawable
+ownership, removal/recreation, concurrent work and cross-module geometry/query
+handoff. The native input suites add gestures, keyboard interaction, navigation,
+rotation and background/resume cycles.
+
+For Android, build a Release/R8 app as well as running the Debug input suite on a
+connected arm64 target:
+
+```sh
+./gradlew :example:androidApp:assembleRelease \
+  :example:androidApp:connectedDebugAndroidTest
+```
+
+Install and launch the Release app separately to exercise the optimized API path;
+a successful build alone is not a runtime result. The example Release build uses
+the debug signing configuration, not distribution signing.
+
+For iOS, build the Kotlin frameworks and Xcode host as described in the README,
+install the app, then run the input suite on that simulator:
+
+```sh
+xcodegen generate --spec example/iosApp/tests/project.yml
+xcodebuild -project example/iosApp/tests/GLMapDemoUITests.xcodeproj \
+  -scheme GLMapDemoUITests \
+  -destination 'platform=iOS Simulator,id=<simulator-uuid>' \
+  -derivedDataPath build/ios-ui-tests CODE_SIGNING_ALLOWED=NO test
+```
+
+Replace the placeholder with the target simulator UUID. Native input tests use the
+focused startup sample, not a catalog screen. Record device/simulator type, OS,
+build configuration and command with every result.
+
+## Headless module isolation
+
+Build Core, Search and Route separately. None should include Compose or the map
+renderer. Android probes can be selected through `-Pprobe`:
+
+```sh
+./gradlew -Pprobe=core :headless-app:installRelease
+./gradlew -Pprobe=search :headless-app:installRelease
+./gradlew -Pprobe=route :headless-app:installRelease
+```
+
+Open each installed probe and check its result. For iOS, use the same property
+with `:headless-probe:linkReleaseFrameworkIosSimulatorArm64`, then integrate the
+probe framework and `headless-probe/iosApp/App.swift` into a simulator host with
+the matching public SwiftPM products. Core needs only `GLMapCore`; Search and
+Route add only their selected product. The Search probe also needs the bundled
+Montenegro map. Follow the [Apple integration guide](SOURCE.md#apple-framework-integration).
+
+Inspect APK libraries and app frameworks in addition to the runtime result.
+Absence of a map view in source is not proof that the renderer was excluded.
+
+## Recorded results
+
+The verification summary dated **2026-09-24** and the saved
+[evidence](tests/results/README.md) record:
+
+| Check | Recorded outcome |
+| --- | --- |
+| Android Release/R8 API suite | 9/9 checks passed |
+| iOS API suite | 9/9 checks passed |
+| Headless Core/Search/Route | All six Android/iOS variants passed; runtime and packaged-library checks excluded the renderer |
+| Route dependency inspection | No Compose or Map SDK dependency |
+| Controlled ownership/download tests | Passed |
+| Android Release build | Built with R8 |
+| Kotlin iOS frameworks | Device arm64 and simulator arm64 built |
+| iOS device archive | Built without signing; not a signed installation or device test |
+| Maven packaging check | Platform variants and common metadata generated in the local verification repository |
+
+Retained results describe specific runs, not every device or service combination.
+They do not establish physical-device, authenticated service-catalog or fresh-process
+offline-restoration coverage. The earlier build summary records non-fatal warnings
+about Compose/AndroidX metadata and expect/actual classes.
+
+### Shared demo layout validation
+
+The `example/shared`, `example/androidApp` and `example/iosApp` layout and the
+`GLMapDemo` application were checked on **2026-09-24**. The
+[run summary](tests/results/demo-layout.json) records the tested source fingerprint,
+toolchain, commands, target types and outcomes.
+
+| Check | Outcome |
+| --- | --- |
+| Host module boundaries and controlled lifetime/download regressions | Passed |
+| Shared entry points, build paths, identifiers and asset layout | 6/6 host checks passed |
+| Android Debug, instrumented-test and Release/R8 builds | Passed |
+| Android Release/R8 API suite | 9/9 on an arm64 Android 17 emulator |
+| Android Debug UI suite | 4/4 on the emulator, including catalog/Checks navigation |
+| Shared Kotlin Release frameworks | Both `iosArm64` and `iosSimulatorArm64` built |
+| iOS Release app and API suite | Built; 9/9 on an arm64 iOS 27.0 simulator |
+| iOS UI suite | 8/8 on the simulator, including catalog/Checks navigation |
+| iOS device Release app | Built without signing; not installed or run on a physical device |
+| Headless Core/Search/Route | All six variants passed on the Android 17 emulator and iOS 27.1 simulator; no renderer in runtime/package checks |
+| Native artifact identity and resources | Android ELF build IDs, iOS simulator/device framework UUIDs and Core resources matched the selected SDK |
+| Public XcodeGen configuration | Generated successfully without a native SDK override |
+| README snippets | Six common/Android snippets and one iOS initializer compiled against local module artifacts |
+| Documentation and moved assets | Relative links/anchors, fences, JSON/shell syntax and whitespace passed; asset contents were unchanged |
+
+Native builds and runs used prebuilt `2.2.0-dev.515481f9f` artifacts through an
+explicit local override. Their native and Swift package revisions matched
+`native-sdk.json`; the dependency pins were not changed. The public Apple release
+manifest request returned HTTP 404, so these runs do **not** establish clean public
+Maven/SwiftPM release resolution. Project generation alone does not resolve or
+validate its native dependencies.
+
+Builds retained non-fatal expect/actual, interop opt-in and unchecked-cast warnings,
+a simulator ICU deployment-target warning, and an unsigned device-build orientation
+warning. The controlled download double emitted a redundant-cast warning.
+There were no signed physical-device, authenticated-service or fresh-process
+offline-restoration runs. Runtime checks on these OS versions do not establish
+coverage of older Android/iOS releases.
+
+## Release validation and reporting
+
+For each SDK release, check public dependency resolution and package metadata,
+then run API, lifecycle and isolation tests against the selected release artifacts.
+Test signed physical-device installation separately from simulator execution.
+Test authenticated services and fresh-process offline restoration separately from
+bundled-data and controlled-callback tests.
+
+Record the source revision, artifact identities, command, toolchain, target type,
+outcome and limitations. Remove keys and machine-specific paths from shared logs.
+Do not infer runtime coverage from a successful build or package publication.

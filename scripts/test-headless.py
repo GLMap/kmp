@@ -46,7 +46,7 @@ targets:
     platform: iOS
     sources:
       - {root}/headless-probe/iosApp/App.swift
-'''+('      - '+str(root/'assets/Montenegro.vm')+'\n' if name=='search' else '')+'''    dependencies:
+'''+('      - '+str(root/'example/assets/Montenegro.vm')+'\n' if name=='search' else '')+'''    dependencies:
       - framework: '''+str(root/'headless-probe/build/bin/iosSimulatorArm64/releaseFramework/GlobusHeadlessProbe.framework')+'''
         embed: false
 '''+''.join(f'      - package: GLMap\n        product: {product}\n' for product in products)+f'''    settings:

@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "suite": "shared-demo-layout",
+  "date": "2026-09-24",
+  "baseRevision": "a0fb0c8cb8f7abb546f8b1b4ba9b4dac60ddfd4d",
+  "sourceState": "Working tree with the shared demo layout and naming changes",
+  "testedSourceFingerprint": {
+    "algorithm": "SHA-256 of sorted source paths, NUL, and each file's binary SHA-256; source/configuration files and example assets, excluding tests/results",
+    "sha256": "b73ce54e50352ab99ca9b6be6f61f96ae1193ab3186345f75ec03d5f6320ad43",
+    "files": 94
+  },
+  "native": {
+    "sourceRevision": "515481f9f8e84711ccbc19e2395605959ad81540",
+    "swiftPackageRevision": "04f1a99d51045456896eb7cca3fb15fb5b570866",
+    "version": "2.2.0-dev.515481f9f",
+    "resolution": "Explicit local prebuilt SDK override matching native-sdk.json; not public release resolution",
+    "publicAppleManifestFetch": "HTTP 404"
+  },
+  "toolchain": {
+    "kotlin": "2.4.20",
+    "compose": "1.12.0",
+    "androidGradlePlugin": "9.1.0",
+    "gradle": "9.3.1",
+    "java": "17.0.14",
+    "xcode": "27.0 (27A266a)"
+  },
+  "buildCommand": "./gradlew --offline --no-daemon :example:androidApp:assembleDebug :example:androidApp:assembleDebugAndroidTest :example:androidApp:assembleRelease :example:shared:linkReleaseFrameworkIosSimulatorArm64 :example:shared:linkReleaseFrameworkIosArm64",
+  "hostChecks": {
+    "moduleBoundaries": "PASS: four modules",
+    "exampleLayout": "PASS: six tests",
+    "drawableLifetime": "PASS",
+    "controlledDownloads": "PASS: Android and iOS method bodies with JVM doubles",
+    "readmeSnippets": "PASS: six common/Android snippets and one iOS initialization snippet compiled against local module artifacts",
+    "publicXcodeProjectGeneration": "PASS: no local override",
+    "movedAssetsUnchanged": "PASS"
+  },
+  "headless": {
+    "command": "python3 scripts/test-headless.py --simulator <target>",
+    "androidTarget": "arm64 Android 17 emulator",
+    "iosTarget": "arm64 iOS 27.1 simulator",
+    "configuration": "Release/R8 on Android, Release on iOS",
+    "variants": ["Core", "Search", "Route"],
+    "passed": 6,
+    "failed": 0,
+    "rendererExcluded": "PASS: runtime checks and packaged native library/framework inspection"
+  },
+  "android": {
+    "targetType": "arm64 emulator",
+    "os": "Android 17",
+    "builds": ["Debug", "Debug androidTest", "Release/R8"],
+    "api": {"configuration": "Release/R8", "passed": 9, "failed": 0},
+    "ui": {"configuration": "Debug", "passed": 4, "failed": 0},
+    "uiCommand": "./gradlew --offline --no-daemon :example:androidApp:connectedDebugAndroidTest"
+  },
+  "ios": {
+    "targetType": "arm64 simulator",
+    "os": "iOS 27.0",
+    "sharedFrameworks": ["Release iosArm64", "Release iosSimulatorArm64"],
+    "api": {"configuration": "Release", "passed": 9, "failed": 0},
+    "ui": {"configuration": "Debug test runner, Release app", "passed": 8, "failed": 0},
+    "uiCommand": "xcodebuild -project example/iosApp/tests/GLMapDemoUITests.xcodeproj -scheme GLMapDemoUITests -configuration Debug -destination 'platform=iOS Simulator,id=<target>' -derivedDataPath build/demo-layout/ios-ui-tests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO test-without-building",
+    "unsignedDeviceBuild": "PASS: Release app for generic iOS device; not installed or run on a physical device"
+  },
+  "artifactChecks": {
+    "androidNativeBuildIdsAndResources": "PASS",
+    "simulatorNativeUuidsAndResources": "PASS",
+    "deviceNativeUuidsAndResources": "PASS",
+    "applicationIdsDisplayNamesAndDemoResources": "PASS"
+  },
+  "coverage": [
+    "Shared catalog and return-to-checks navigation",
+    "Camera and vector APIs, cross-module handoff, ownership and disposal",
+    "Native gestures, keyboard, orientation and background/resume",
+    "Transport benchmark assertions"
+  ],
+  "limitations": [
+    "No signed physical-device deployment",
+    "No authenticated service or fresh-process offline-restoration certification",
+    "Runtime targets do not establish compatibility on older OS versions",
+    "Public Maven/SwiftPM release resolution was not validated"
+  ]
+}

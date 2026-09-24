@@ -1,0 +1,25 @@
+name: GLMapDemoUITests
+options:
+  deploymentTarget:
+    iOS: "16.4"
+targets:
+  GLMapDemoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - MapUiTests.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: software.globus.glmap.demo.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "5.0"
+        CODE_SIGNING_ALLOWED: NO
+schemes:
+  GLMapDemoUITests:
+    build:
+      targets:
+        GLMapDemoUITests: [test]
+    test:
+      targets:
+        - GLMapDemoUITests
+      gatherCoverageData: false

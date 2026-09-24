@@ -19,7 +19,7 @@ data class MapState(val latitude: Double, val longitude: Double, val zoom: Doubl
 @Serializable enum class UpdateResult { Ready, Superseded, Cancelled, Failed }
 class VectorLayer internal constructor(internal val owner: MapController, internal val id: Int)
 
-/** Lab API, called on the UI thread. Native preparation owns update ordering.
+/** Map API, called on the UI thread. Native preparation owns update ordering.
  * Cancelling await does not cancel native work; removal/disposal does.
  */
 abstract class MapController:MapQueryTarget {

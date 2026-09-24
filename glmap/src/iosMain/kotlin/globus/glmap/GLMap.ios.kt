@@ -138,7 +138,7 @@ private class IosMapController(withFixture: Boolean) : MapController() {
         if (values.isNotEmpty()) {
             val builder = GeometryBuilder()
             values.usePinned { pinned ->
-                GLMapLabAddLineLonLat(builder,pinned.addressOf(0),(values.size/2).toULong())
+                GLMapKmpAddLineLonLat(builder,pinned.addressOf(0),(values.size/2).toULong())
             }
             objects.addObject(checkNotNull(builder.build()))
         }
@@ -168,7 +168,7 @@ private class IosMapController(withFixture: Boolean) : MapController() {
         val entry = checkNotNull(layers[id]) { "layer_removed" }
         val parsed = parse(style)
         val builder = GeometryBuilder(); builder.beginPolygon()
-        rings.forEach { ring -> ring.usePinned { GLMapLabAddLineLonLat(builder,it.addressOf(0),(ring.size/2).toULong()) } }
+        rings.forEach { ring -> ring.usePinned { GLMapKmpAddLineLonLat(builder,it.addressOf(0),(ring.size/2).toULong()) } }
         val objects = GLMapVectorObjectArray(); objects.addObject(checkNotNull(builder.build()) { "invalid_geometry" })
         entry.objects = objects
         return submit(entry, objects, parsed)

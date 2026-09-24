@@ -7,7 +7,8 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "glmap-kmp"
-include(":glmap-core-kmp", ":glmap-kmp", ":glsearch-kmp", ":glroute-kmp", ":example", ":androidApp")
+include(":glmap-core-kmp", ":glmap-kmp", ":glsearch-kmp", ":glroute-kmp")
+include(":example:shared", ":example:androidApp")
 project(":glmap-core-kmp").projectDir=file("glmap-core")
 project(":glmap-kmp").projectDir=file("glmap")
 project(":glsearch-kmp").projectDir=file("glsearch")

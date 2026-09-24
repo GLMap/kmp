@@ -1,8 +1,20 @@
 # Download lifecycle regression tests
 
-Run `python3 tests/downloads.py` from the repository root after building once
-(to cache Kotlin 2.4.20 and coroutines 1.10.2). Tests extract current production
-method bodies, use controlled native callbacks, and use real files/coroutines.
-They cover cancellation, late callbacks, partial-file ownership and start failure.
-KMP's iOS method is tested with JVM filesystem doubles; RN iOS is compiled with
-Swift on macOS. These are not HTTP, process-kill or native file-format tests.
+From the repository root, run:
+
+```sh
+python3 tests/downloads.py
+```
+
+Resolve the Gradle dependencies first so Kotlin 2.4.20 and coroutines 1.10.2 are
+available in the Gradle cache. The test extracts current production download
+methods from both platform implementations and compiles them with controlled
+native callbacks and filesystem doubles on the JVM.
+
+Coverage includes cancellation, late success/error callbacks, replacement
+requests, partial-file ownership, retry, cache reuse and start failure. The iOS
+method is tested with JVM doubles, not in an iOS process.
+
+These are not HTTP, process-kill, authenticated-service or native file-format
+tests. See [VERIFICATION.md](../../VERIFICATION.md) for native integration and
+reporting guidance. Generated test files remain under ignored `build/`.
