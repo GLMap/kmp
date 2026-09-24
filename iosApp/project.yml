@@ -1,0 +1,62 @@
+name: GLMapKmpLab
+options:
+  deploymentTarget:
+    iOS: "16.4"
+packages:
+  GLMap:
+    url: https://github.com/GLMap/GLMapSwift.git
+    exactVersion: 2.2.0
+targets:
+  GLMapKmpLab:
+    type: application
+    platform: iOS
+    sources:
+      - App.swift
+      - path: ../assets
+        buildPhase: resources
+    info:
+      path: Info.plist
+      properties:
+        CADisableMinimumFrameDurationOnPhone: true
+        NSLocationWhenInUseUsageDescription: Shows your position in the location and navigation demos.
+    dependencies:
+      - framework: ../example/build/bin/$(KOTLIN_TARGET)/releaseFramework/GLMapKmpDemo.framework
+        embed: false
+      - package: GLMap
+        product: GLMap
+      - package: GLMap
+        product: GLSearch
+      - package: GLMap
+        product: GLRoute
+    postCompileScripts:
+      # Ignored config/local.json or GLMAP_API_KEY supply the demo key; it is written to the bundle and never echoed.
+      - name: Embed GLMap key
+        basedOnDependencyAnalysis: false
+        script: |
+          set +x
+          OUT="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glmap-key.txt"
+          CONFIG="${SRCROOT}/../config/local.json"
+          mkdir -p "$(dirname "$OUT")"
+          if [ -f "$CONFIG" ]; then /usr/bin/plutil -extract GLMAP_API_KEY raw -o "$OUT" "$CONFIG" 2>/dev/null || : > "$OUT"
+          else printf '%s' "${GLMAP_API_KEY:-}" > "$OUT"; fi
+    settings:
+      base:
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        PRODUCT_BUNDLE_IDENTIFIER: software.globus.lab.glmapkmp
+        PRODUCT_NAME: GLMapKmpLabApp
+        SWIFT_VERSION: "5.0"
+        ARCHS: arm64
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: GLMap KMP Lab
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+        "KOTLIN_TARGET[sdk=iphoneos*]": iosArm64
+        "KOTLIN_TARGET[sdk=iphonesimulator*]": iosSimulatorArm64
+        TARGETED_DEVICE_FAMILY: "1,2"
+        OTHER_LDFLAGS: ["$(inherited)", "-ObjC"]
+schemes:
+  GLMapKmpLab:
+    build:
+      targets:
+        GLMapKmpLab: all
