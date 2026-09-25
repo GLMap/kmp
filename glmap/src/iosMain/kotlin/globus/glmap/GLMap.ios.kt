@@ -155,7 +155,7 @@ private class IosMapController(withFixture: Boolean) : MapController() {
         return checkNotNull(parser.finishWithError(null)) { "invalid_style" }
     }
     private fun submit(entry: Layer, objects: GLMapVectorObjectArray, parsed: GLMapVectorCascadeStyle): Deferred<UpdateResult> = request { done ->
-        entry.native.setVectorObjects(objects,withStyle = parsed,updateCompletion = { outcome ->
+        entry.native.setVectorObjects(objects,withStyle = parsed,completion = { outcome ->
             done(when(outcome) {
                 GLMapVectorLayerUpdateResultReady -> UpdateResult.Ready
                 GLMapVectorLayerUpdateResultSuperseded -> UpdateResult.Superseded

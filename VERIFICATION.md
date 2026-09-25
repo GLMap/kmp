@@ -9,6 +9,7 @@ python3 scripts/check-modules.py
 python3 tests/example_layout.py
 python3 tests/run.py
 python3 tests/downloads.py
+python3 scripts/check-vector-api.py
 ```
 
 The module check enforces Core-only dependencies and excludes Compose from
@@ -141,6 +142,31 @@ warning. The controlled download double emitted a redundant-cast warning.
 There were no signed physical-device, authenticated-service or fresh-process
 offline-restoration runs. Runtime checks on these OS versions do not establish
 coverage of older Android/iOS releases.
+
+### Unified native vector completions
+
+The status-bearing `setVectorObject(s)` API was validated on **2026-09-25** with
+native SDK `2.2.0-dev.05553b111`. See [vector-status.json](tests/results/vector-status.json)
+for source/artifact provenance and target types. Android now calls
+`setVectorObjects(..., UpdateCompletion)` and Kotlin/Native uses `completion =`.
+The existing `Deferred<UpdateResult>` continues to preserve Ready, Superseded,
+Cancelled and Failed; Ready does not certify presentation of a rendered frame.
+
+- Android Debug, instrumented-test and Release/R8 builds passed.
+- Kotlin Release frameworks built for device arm64 and simulator arm64; the iOS
+  Release simulator host also built against the selected SDK.
+- Android 14 arm64 emulator, Release/R8: **9/9** API/lifecycle scenarios passed.
+- iPhone 17 / iOS 27.0 arm64 simulator, Release: **9/9** API/lifecycle scenarios and
+  the catalog/Checks native input smoke test (**1/1**) passed.
+- Host ownership/download regressions, six layout tests, module checks and
+  packaged Android/Apple vector API checks passed.
+- Android/iOS native IDs and Core resources matched the newly built SDK.
+
+The SDK's pre-existing working-tree delta is identified by manifest hash in the
+result; no native source was edited. Pins were intentionally updated in all three
+bindings. These local builds do not establish public release resolution, signed
+physical-device or authenticated-service coverage. Full gesture, benchmark and
+headless runtime suites were not re-run for this migration.
 
 ## Release validation and reporting
 

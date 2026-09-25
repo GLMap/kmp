@@ -49,8 +49,12 @@ data or online tiles enabled through Core. Include map-data attribution in your 
 - The composable owns its controller and disposes it on removal. Do not reuse a
   controller, layer or drawable after its map has been removed.
 - `captureState().await()` returns a snapshot, not a live camera binding.
-- Vector updates return a `Deferred<UpdateResult>`. Cancelling an await does not
-  itself cancel native preparation; layer removal and map disposal own cleanup.
+- Vector updates return a `Deferred<UpdateResult>` with `Ready`, `Superseded`,
+  `Cancelled` or `Failed`, matching the native completion status. `Ready` means
+  prepared batches were installed, not necessarily presented in a frame. A
+  paused/detached map can keep a request pending until rendering resumes, it is
+  superseded, or the layer is released. Cancelling an await does not itself cancel
+  native preparation; layer removal and map disposal own cleanup.
 - Search's `objectAt` extension is supplied by `globus.glsearch`, not by Map.
 - Route geometry enters through Core's `TrackSource` and `LineSource` capabilities.
 

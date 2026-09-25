@@ -111,7 +111,7 @@ private class AndroidMapController(private val context: Context, withFixture: Bo
         require(parser.parseNextString(style)) { "invalid_style" }; checkNotNull(parser.finish())
     }
     private fun submit(layer: Layer, objects: GLMapVectorObjectList, parsed: GLMapVectorCascadeStyle): Deferred<UpdateResult> = request { done ->
-        layer.native.setVectorObjectsWithResult(objects,parsed) { result ->
+        layer.native.setVectorObjects(objects,parsed) { result ->
             val value = when(result) {
                 GLMapVectorLayer.UpdateResult.Ready -> UpdateResult.Ready
                 GLMapVectorLayer.UpdateResult.Superseded -> UpdateResult.Superseded

@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "date": "2026-09-25",
+  "suite": "unified-native-vector-completion",
+  "wrapper": "kotlin-multiplatform",
+  "sourceFingerprint": {
+    "sha256": "aea368a9e50fb0298b5deb86a95cb829ed1bdf61b53b781244b50949857c88ce",
+    "files": 80,
+    "algorithm": "Sorted existing tracked/unignored source/configuration paths, NUL, binary SHA-256; excludes tests/results",
+    "extensions": [".dart", ".kt", ".kts", ".swift", ".m", ".h", ".py", ".ts", ".tsx", ".js", ".cjs", ".mjs", ".json", ".yaml", ".yml", ".gradle", ".podspec", ".xml", ".plist", ".pbxproj", ".xcscheme"]
+  },
+  "native": {
+    "version": "2.2.0-dev.05553b111",
+    "sourceRevision": "05553b111f1cda2f957e4b4b54f66e738115edb6",
+    "swiftPackageRevision": "621a9cc80dd75a04b26c811c090c437d3a6aaa76",
+    "sourceDiffSha256": "ef57c366a775b4238928517f16269b839c06d039361dc7dd9772747d5ea50c4d",
+    "manifestSha256": "45c1ca67628cfe69d0cacfe275c961ad10aa9d8f7554a7fbb07911ba7fee87a3",
+    "builtByThisInvocation": true,
+    "note": "Explicit local SDK override, including its pre-existing working-tree delta; native source was not edited"
+  },
+  "checks": {
+    "hostOwnershipDownloadsAndModuleChecks": "PASS",
+    "exampleLayoutHostTests": "6/6 PASS",
+    "packagedAndroidAndAppleApiInspection": "PASS",
+    "androidBuilds": "PASS: Debug, androidTest and Release/R8",
+    "kotlinAppleFrameworks": "PASS: Release iosArm64 and iosSimulatorArm64",
+    "iosHostBuild": "PASS: Release simulator app",
+    "android": {"target": "Android 14 arm64 emulator", "configuration": "Release/R8", "apiLifecycle": "9/9 PASS"},
+    "ios": {"target": "iPhone 17 iOS 27.0 arm64 simulator", "configuration": "Release", "apiLifecycle": "9/9 PASS", "catalogChecksUiSmoke": "1/1 PASS"},
+    "nativeArtifactIdentityAndCoreResources": "PASS: Android APK and iOS simulator app"
+  },
+  "commands": [
+    "./gradlew :example:androidApp:assembleDebug :example:androidApp:assembleDebugAndroidTest :example:androidApp:assembleRelease :example:shared:linkReleaseFrameworkIosSimulatorArm64 :example:shared:linkReleaseFrameworkIosArm64",
+    "adb -s <emulator> shell am start -n software.globus.glmap.demo/.MainActivity",
+    "xcodebuild -project example/iosApp/tests/GLMapDemoUITests.xcodeproj -scheme GLMapDemoUITests -destination 'platform=iOS Simulator,id=<target>' -only-testing:GLMapDemoUITests/MapUiTests/testDemoCatalogAndChecksNavigation -parallel-testing-enabled NO -collect-test-diagnostics never CODE_SIGNING_ALLOWED=NO test"
+  ],
+  "outcomes": ["Ready", "Superseded", "Cancelled", "Failed"],
+  "limitations": ["Public dependency resolution not validated", "No signed physical-device or authenticated-service run", "No new full gesture, benchmark or headless runtime run"]
+}

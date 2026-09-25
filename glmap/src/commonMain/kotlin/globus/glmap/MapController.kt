@@ -16,7 +16,13 @@ data class MapState(val latitude: Double, val longitude: Double, val zoom: Doubl
     val scale: Double, val angle: Double, val pitch: Double, val originX: Double, val originY: Double) {
     fun camera() = Camera(latitude, longitude, zoom, angle, pitch)
 }
-@Serializable enum class UpdateResult { Ready, Superseded, Cancelled, Failed }
+/** Terminal native preparation status, not frame presentation or download progress. */
+@Serializable enum class UpdateResult {
+    /** Prepared batches were installed. */ Ready,
+    /** A newer request replaced this request before preparation began. */ Superseded,
+    /** Removal, release or loss of the rendering surface cancelled preparation. */ Cancelled,
+    /** Preparation failed; previously installed batches are preserved. */ Failed
+}
 class VectorLayer internal constructor(internal val owner: MapController, internal val id: Int)
 
 /** Map API, called on the UI thread. Native preparation owns update ordering.
