@@ -9,7 +9,10 @@ kotlin {
   target.binaries.framework {baseName="GlobusHeadlessProbe";isStatic=true}
   target.binaries.all {
    val slices=if(target.name=="iosArm64") listOf("ios-arm64") else listOf("ios-arm64-simulator","ios-arm64_x86_64-simulator")
-   linkerOpts(frameworks.map {name-> "-F${slices.map {sdk.resolve("$name.xcframework/$it")}.first {it.isDirectory}}"} + frameworks.flatMap {listOf("-framework",it)})
+   linkerOpts(frameworks.map { name ->
+    val candidates = slices.map { sdk.resolve("$name.xcframework/$it") }
+    "-F${candidates.firstOrNull { it.isDirectory } ?: candidates.first()}"
+   } + frameworks.flatMap {listOf("-framework",it)})
   }
  }
  sourceSets {

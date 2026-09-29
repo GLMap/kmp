@@ -6,8 +6,10 @@ test coverage. Native dependency versions are in
 
 ## Contents
 
-- [vector-status.json](vector-status.json): unified native vector completion API,
-  current SDK/source identities and Android/iOS API/lifecycle validation.
+- [release-2.2.0.json](release-2.2.0.json): public GLMap 2.2.0 dependency resolution,
+  archive extraction, artifact identities and Android/iOS API/lifecycle validation.
+- [vector-status.json](vector-status.json): earlier dev SDK vector completion API,
+  source identities and Android/iOS API/lifecycle validation.
 
 - [demo-layout.json](demo-layout.json): shared-demo layout, build, API, UI and
   headless results, with source fingerprint, toolchain and explicit target types.

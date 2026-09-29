@@ -22,8 +22,20 @@ examples**.
 - A suitable GLMap API key and network access for online maps, search, routing
   and downloads. Offline operations need data covering the requested area.
 
-The modules use native GLMap SDK 2.2.0 from the public Maven repository and
-[GLMapSwift](https://github.com/GLMap/GLMapSwift).
+The modules and demo pin the released native **GLMap SDK 2.2.0** from the public
+Maven repository and [GLMapSwift](https://github.com/GLMap/GLMapSwift). The Kotlin
+wrappers have their own version (`0.1.0-beta.1`); it is not the native SDK version.
+
+### Updating to native SDK 2.2.0
+
+Rebuild the Android app and Kotlin/Native frameworks. For an iOS source build,
+run `python3 scripts/fetch-apple-sdk.py` again before rebuilding so cinterop uses
+the 2.2.0 headers, and resolve exact SwiftPM version `2.2.0` in the host. Keep
+Core, Map, Search and Route on the same native release. Initialize Core before
+any native API, including headless Search/Route calls. Vector updates retain all
+four `UpdateResult` outcomes; `Ready` means geometry is ready to draw, not that a
+frame has been presented. See [verification](VERIFICATION.md) for release checks
+and their scope.
 
 ## Add a map to your app
 
@@ -155,14 +167,15 @@ use Core's downloads. See the [Core guide](glmap-core/README.md).
 
 ## Run the demo
 
-Clone the repository and fetch the public Apple artifacts once before building.
-The workspace configures its Android and iOS Gradle targets together:
+Clone the repository:
 
 ```sh
 git clone https://github.com/GLMap/kmp.git glmap_kmp
 cd glmap_kmp
-python3 scripts/fetch-apple-sdk.py
 ```
+
+Android-only builds resolve Maven dependencies directly and do not need Apple
+frameworks. Fetch the Apple artifacts before an iOS build as shown below.
 
 The demo is one shared Compose application in `example/shared/`.
 `example/androidApp/` and `example/iosApp/` are thin platform launchers, not separate
@@ -175,10 +188,11 @@ example and open **GLMap Demo** from the launcher:
 ./gradlew :example:androidApp:installDebug
 ```
 
-**iOS:** install [XcodeGen](https://github.com/yonaskolb/XcodeGen), build the shared
-Kotlin frameworks using the artifacts fetched above, and generate the Xcode project:
+**iOS:** install [XcodeGen](https://github.com/yonaskolb/XcodeGen), fetch the pinned
+Apple artifacts, build the shared Kotlin frameworks and generate the Xcode project:
 
 ```sh
+python3 scripts/fetch-apple-sdk.py
 ./gradlew :example:shared:linkReleaseFrameworkIosArm64 \
   :example:shared:linkReleaseFrameworkIosSimulatorArm64
 python3 scripts/generate-ios-project.py

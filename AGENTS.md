@@ -23,8 +23,8 @@ and tests.
 - Keep the demo under `example/`: shared Compose code in `shared/`, thin platform
   hosts in `androidApp/` and `iosApp/`, and common data in `assets/`.
 - Run `python3 scripts/check-modules.py`, `python3 tests/example_layout.py`,
-  `python3 tests/run.py`, `python3 tests/downloads.py` and
-  `python3 scripts/check-vector-api.py`. Re-run Android/iOS
+  `python3 tests/fetch_apple_sdk.py`, `python3 tests/run.py`,
+  `python3 tests/downloads.py` and `python3 scripts/check-vector-api.py`. Re-run Android/iOS
   integration suites for API or platform changes, and API/lifecycle suites whenever
   the native SDK pin changes.
 - Report checks actually performed. Distinguish host tests, emulator/simulator

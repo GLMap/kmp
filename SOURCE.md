@@ -50,9 +50,13 @@ fetch the pinned release artifacts:
 python3 scripts/fetch-apple-sdk.py
 ```
 
-The script reads the public GLMapSwift release manifest, verifies the archive
-SHA-256 checksums and arm64 device/simulator slices, and extracts them under the
-ignored `.local-sdk/ios/` directory. No native source checkout is needed.
+The script reads the public GLMapSwift release manifest, verifies each complete
+archive's SHA-256 checksum, and extracts only arm64 iOS device/simulator slices
+under the ignored `.local-sdk/ios/` directory. Other platforms in the published
+archives are not needed for Kotlin iOS targets and are not extracted. The local
+XCFramework manifest lists only the installed slices; the downloaded binaries
+and headers are unchanged. No native source checkout is needed. Android-only
+builds do not require this download.
 
 Each wrapper module uses its own cinterop definition and reuses Core bindings.
 An app linking the Kotlin modules must make the native frameworks visible to the

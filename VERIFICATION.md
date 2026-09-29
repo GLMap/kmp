@@ -7,6 +7,7 @@ Use the toolchain in [README.md](README.md#requirements). From the repository ro
 ```sh
 python3 scripts/check-modules.py
 python3 tests/example_layout.py
+python3 tests/fetch_apple_sdk.py
 python3 tests/run.py
 python3 tests/downloads.py
 python3 scripts/check-vector-api.py
@@ -19,6 +20,10 @@ the Gradle cache; resolve the project's dependencies first on a fresh machine.
 
 `tests/example_layout.py` checks the shared entry points, Gradle module paths,
 platform identifiers, shared assets and documented build commands without a device.
+`tests/fetch_apple_sdk.py` checks release-archive extraction: iOS slice selection,
+symlinked temporary roots, rejection of traversal/iOS symlinks, missing slices
+and downloader request headers. `scripts/check-modules.py` also checks all native
+version pins, including the demo's SwiftPM requirement.
 `tests/run.py` covers drawable ownership, removal, disposal and repeated cleanup.
 The [download regressions](tests/downloads/README.md) cover cancellation, late
 callbacks, file ownership and retry. These are host tests, not emulator/simulator
@@ -82,6 +87,42 @@ Montenegro map. Follow the [Apple integration guide](SOURCE.md#apple-framework-i
 
 Inspect APK libraries and app frameworks in addition to the runtime result.
 Absence of a map view in source is not proof that the renderer was excluded.
+
+## Published GLMap 2.2.0 validation — 2026-09-29
+
+The native release is pinned to `36a343f9275d76734466ecae1f39b9c0e0655a8b` and
+SwiftPM tag `2.2.0` to `b07267c4bdd7cfcde5e001708c95d897eaa2f19a`. These checks
+used public Maven/SwiftPM artifacts with `GLMAP_SDK_DIR` unset. See
+[release-2.2.0.json](tests/results/release-2.2.0.json) for the run summary.
+
+- Module/native-pin, vector-call-site, ownership and controlled download checks
+  passed. Shared-layout tests passed **6/6**, and downloader regressions **6/6**.
+- `python3 scripts/fetch-apple-sdk.py` downloaded all four public archives,
+  verified their release-manifest SHA-256 values and extracted iOS slices.
+- Android Debug, instrumentation and Release/R8 builds passed. Android Gradle
+  configuration also worked before the Apple SDK download was available.
+- Android 17 arm64 emulator: Debug catalog/Checks navigation passed (**1/1**).
+  The separately installed Release/R8 app produced a fresh **9/9** API/lifecycle
+  report, including supersession, cancellation on removal and ten remounts.
+- Kotlin Release simulator framework, XcodeGen host generation and iOS Release
+  simulator app built successfully. On iPhone 17 / iOS 27.0 arm64, API/lifecycle
+  checks passed **9/9** and catalog/Checks navigation passed **1/1**.
+- Packaged Android ELF build IDs and iOS simulator UUIDs matched public 2.2.0
+  artifacts. Android `world.vm` remained uncompressed; published vector
+  headers/classes expose the required status-bearing completion API.
+
+The first public Apple download exposed default-user-agent HTTP 403, symlinked
+macOS temporary paths and non-iOS framework symlinks in the release archives.
+The downloader now identifies itself, resolves its temporary root and extracts
+only the required iOS slices without weakening checksum/path validation. Host
+Kotlin tests initially needed Gradle to populate their compiler cache; final
+runs passed after dependency resolution.
+
+These are workspace builds and emulator/simulator runs. Device frameworks/apps,
+physical devices, full gesture suites, headless runtime, authenticated services,
+benchmarks and offline restoration were not revalidated. Existing toolchain
+warnings remain. Earlier results below retain their original dev SDK scope;
+references to matching pins describe the pins at the time of those runs.
 
 ## Recorded results
 
