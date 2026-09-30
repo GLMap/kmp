@@ -79,7 +79,7 @@ products at the same version as the Kotlin compile/link inputs.
 2. If needed, update its cinterop definition without duplicating Core types.
 3. Update the module README and a demo using the public API.
 4. Add tests for ownership, cancellation, repeated cleanup and concurrent calls.
-5. Run the checks in [VERIFICATION.md](VERIFICATION.md), including the relevant
+5. Run the contributor checks in [AGENTS.md](AGENTS.md), including the relevant
    Android/iOS suites. Re-run API and lifecycle checks on both platforms whenever
    the native dependency changes.
 

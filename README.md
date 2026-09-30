@@ -34,8 +34,7 @@ the 2.2.0 headers, and resolve exact SwiftPM version `2.2.0` in the host. Keep
 Core, Map, Search and Route on the same native release. Initialize Core before
 any native API, including headless Search/Route calls. Vector updates retain all
 four `UpdateResult` outcomes; `Ready` means geometry is ready to draw, not that a
-frame has been presented. See [verification](VERIFICATION.md) for release checks
-and their scope.
+frame has been presented.
 
 ## Add a map to your app
 
@@ -232,8 +231,7 @@ Map, Search and Route depend only on Core, not on one another.
 
 ## Contributing and licensing
 
-See [SOURCE.md](SOURCE.md) for module structure and API development, and
-[VERIFICATION.md](VERIFICATION.md) for tests and reporting guidance.
+See [SOURCE.md](SOURCE.md) for module structure and API development.
 
 The wrapper's terms are in [LICENSE.txt](LICENSE.txt). Native SDK and map-data
 terms also apply; bundled map data is © OpenStreetMap contributors.

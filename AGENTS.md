@@ -27,9 +27,9 @@ and tests.
   `python3 tests/downloads.py` and `python3 scripts/check-vector-api.py`. Re-run Android/iOS
   integration suites for API or platform changes, and API/lifecycle suites whenever
   the native SDK pin changes.
-- Report checks actually performed. Distinguish host tests, emulator/simulator
-  runs, unsigned archives, signed physical-device runs and authenticated services.
-  See [VERIFICATION.md](VERIFICATION.md).
+- Report checks actually performed in the chat, not in committed release reports.
+  Distinguish host tests, emulator/simulator runs, unsigned archives,
+  signed physical-device runs and authenticated services.
 
 ## Documentation and repository hygiene
 

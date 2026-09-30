@@ -9,4 +9,3 @@
 - Document matching cinterop/SwiftPM artifacts and native rebuild requirements;
   check dependency pins against `native-sdk.json`.
 - Kotlin wrapper versions remain `0.1.0-beta.1`, independent of the native SDK.
-  See [VERIFICATION.md](VERIFICATION.md) for actual release validation results.

@@ -13,8 +13,7 @@ through the shared modules' Maven dependencies; the iOS host pins exact SwiftPM
 version `2.2.0`. Run `python3 scripts/fetch-apple-sdk.py` from the repository root
 before rebuilding the Kotlin/Native frameworks, then regenerate the host with
 `python3 scripts/generate-ios-project.py`. The fetched headers and the frameworks
-linked by Xcode must be from the same release. See
-[VERIFICATION.md](../VERIFICATION.md) for API and lifecycle checks.
+linked by Xcode must be from the same release.
 
 ## Directory structure
 
@@ -127,6 +126,5 @@ Run Gradle commands from the repository root. The generated iOS project is
 4. Cancel screen-owned work and release retained resources during cleanup.
 5. Update the catalog count, this guide and relevant tests.
 
-API, lifecycle, native input and headless checks are documented in
-[VERIFICATION.md](../VERIFICATION.md). A host-only regression test is not a
-substitute for exercising the native app on each platform.
+A host-only regression test is not a substitute for exercising the native app
+on each platform.

@@ -16,5 +16,4 @@ requests, partial-file ownership, retry, cache reuse and start failure. The iOS
 method is tested with JVM doubles, not in an iOS process.
 
 These are not HTTP, process-kill, authenticated-service or native file-format
-tests. See [VERIFICATION.md](../../VERIFICATION.md) for native integration and
-reporting guidance. Generated test files remain under ignored `build/`.
+tests. Generated test files remain under ignored `build/`.
