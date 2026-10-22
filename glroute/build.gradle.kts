@@ -7,7 +7,7 @@ plugins {
 group="globus"
 version="0.1.0-beta.1"
 val sdkRoot=System.getenv("GLMAP_SDK_DIR")?.let(::file)
-val sdkVersion=sdkRoot?.let {(groovy.json.JsonSlurper().parse(it.resolve("sdk.json")) as Map<*,*>)["version"] as String} ?: "2.2.0"
+val sdkVersion=sdkRoot?.let {(groovy.json.JsonSlurper().parse(it.resolve("sdk.json")) as Map<*,*>)["version"] as String} ?: "2.3.1"
 val sdk=sdkRoot?.resolve("ios") ?: rootProject.file(".local-sdk/ios")
 val frameworks=listOf("GLRoute","GLMapCore")
 kotlin {

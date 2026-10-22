@@ -5,7 +5,7 @@ options:
 packages:
   GLMap:
     url: https://github.com/GLMap/GLMapSwift.git
-    exactVersion: 2.2.0
+    exactVersion: 2.3.1
 targets:
   GLMapDemo:
     type: application

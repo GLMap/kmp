@@ -14,7 +14,7 @@ implementation("globus:glmap-kmp:0.1.0-beta.1")
 ```
 
 Requires Kotlin 2.4.20, Compose Multiplatform 1.12.0, Android API 24+ or iOS 16.4+,
-and native GLMap 2.2.0. Core is included transitively. On iOS, link the `GLMapCore`
+and native GLMap 2.3.1. Core is included transitively. On iOS, link the `GLMapCore`
 and `GLMap` SwiftPM products, including Core's resources.
 
 ## Show a map

@@ -14,7 +14,7 @@ sdk = args.sdk_root.expanduser().resolve(); out = args.output.expanduser().resol
 def run(*cmd, **kwargs): return subprocess.run(cmd, check=True, **kwargs)
 def git(*cmd): return subprocess.check_output(['git', '-C', str(sdk), *cmd], text=True).strip()
 revision = git('rev-parse', 'HEAD')
-version = args.version or '2.2.0-dev.' + revision[:9]
+version = args.version or '2.3.1-dev.' + revision[:9]
 products = args.apple_products.resolve() if args.apple_products else sdk/'build/wrapper-sdk/apple'
 if not args.no_build:
     import os

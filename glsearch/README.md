@@ -12,7 +12,7 @@ add to `commonMain`:
 implementation("globus:glsearch-kmp:0.1.0-beta.1")
 ```
 
-Requires Kotlin 2.4.20, Android API 24+ or iOS 16.4+, and native GLSearch 2.2.0.
+Requires Kotlin 2.4.20, Android API 24+ or iOS 16.4+, and native GLSearch 2.3.1.
 On iOS, link `GLMapCore` with its resources and the `GLSearch` SwiftPM product.
 Do not add the Map module unless you need a map UI.
 

@@ -16,21 +16,23 @@ examples**.
 
 - Kotlin 2.4.20 and Java 17; the example uses Android Gradle Plugin 9.1.0.
 - Compose Multiplatform 1.12.0 for Map UI. Core, Search and Route do not require it.
-- Android API 24 or later; the Android example builds with SDK 37 and NDK 29.
+- Android API 24 or later. Apps compile with SDK 37 or later, which the Kotlin
+  modules and Compose Multiplatform 1.12.0 require; the Android example builds
+  with SDK 37 and NDK 30.
 - iOS 16.4 or later, with Xcode on macOS. Kotlin targets are `iosArm64` and
   `iosSimulatorArm64`.
 - A suitable GLMap API key and network access for online maps, search, routing
   and downloads. Offline operations need data covering the requested area.
 
-The modules and demo pin the released native **GLMap SDK 2.2.0** from the public
+The modules and demo pin the released native **GLMap SDK 2.3.1** from the public
 Maven repository and [GLMapSwift](https://github.com/GLMap/GLMapSwift). The Kotlin
 wrappers have their own version (`0.1.0-beta.1`); it is not the native SDK version.
 
-### Updating to native SDK 2.2.0
+### Updating to native SDK 2.3.1
 
 Rebuild the Android app and Kotlin/Native frameworks. For an iOS source build,
 run `python3 scripts/fetch-apple-sdk.py` again before rebuilding so cinterop uses
-the 2.2.0 headers, and resolve exact SwiftPM version `2.2.0` in the host. Keep
+the 2.3.1 headers, and resolve exact SwiftPM version `2.3.1` in the host. Keep
 Core, Map, Search and Route on the same native release. Initialize Core before
 any native API, including headless Search/Route calls. Vector updates retain all
 four `UpdateResult` outcomes; `Ready` means geometry is ready to draw, not that a
@@ -73,11 +75,12 @@ artifacts have separate coordinates.
 
 ### 2. Configure the native host
 
-**Android:** set the minimum SDK to at least 24 and keep map/font assets
-uncompressed in your application module:
+**Android:** compile with SDK 37 or later, set the minimum SDK to at least 24 and
+keep map/font assets uncompressed in your application module:
 
 ```kotlin
 android {
+    compileSdk = 37
     defaultConfig { minSdk = 24 }
     androidResources { noCompress += listOf("vm", "ttf", "otf") }
 }
@@ -88,7 +91,7 @@ Enable Compose in the host and use Java 17. See the
 
 **iOS:** set the deployment target to iOS 16.4 or later. Add
 `https://github.com/GLMap/GLMapSwift.git` to your Xcode project with exact version
-`2.2.0`. Link the `GLMapCore` product, including its resource bundle, and the
+`2.3.1`. Link the `GLMapCore` product, including its resource bundle, and the
 `GLMap` product. Add `GLSearch` or `GLRoute` only when using those modules.
 
 The Kotlin framework link step also needs the matching native XCFramework slice

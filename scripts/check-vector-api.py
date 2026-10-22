@@ -34,16 +34,20 @@ if os.environ.get('GLMAP_SDK_DIR'):
     assert headers
     for header in headers:
         source = header.read_text()
-        assert 'completion:(GLMapVectorLayerUpdateCompletion' in source and 'updateCompletion:' not in source
+        assert 'completion:(GLMapDrawObjectUpdateCompletion' in source and 'updateCompletion:' not in source
+    results = list((sdk / 'ios/GLMapCore.xcframework').glob('*/GLMapCore.framework/Headers/GLMapCoreTypes.h'))
+    assert results
+    for header in results:
+        source = header.read_text()
         for state in ('Ready', 'Superseded', 'Cancelled', 'Failed'):
-            assert 'GLMapVectorLayerUpdateResult' + state in source
+            assert 'GLMapDrawObjectUpdateResult_' + state in source
     with tempfile.TemporaryDirectory() as directory:
         jar = Path(directory) / 'classes.jar'
         with zipfile.ZipFile(next((sdk / 'maven/globus/glmap').rglob('*.aar'))) as archive:
             jar.write_bytes(archive.read('classes.jar'))
         api = subprocess.check_output(['javap', '-classpath', str(jar), 'globus.glmap.GLMapVectorLayer'], text=True)
         assert 'setVectorObjectsWithResult' not in api
-        assert 'setVectorObjects(globus.glmap.GLMapVectorObjectList, globus.glmap.GLMapVectorCascadeStyle, globus.glmap.GLMapVectorLayer$UpdateCompletion)' in api
-        callback = subprocess.check_output(['javap', '-classpath', str(jar), 'globus.glmap.GLMapVectorLayer$UpdateCompletion'], text=True)
+        assert 'setVectorObjects(globus.glmap.GLMapVectorObjectList, globus.glmap.GLMapVectorCascadeStyle, globus.glmap.GLMapDrawObject$UpdateCompletion)' in api
+        callback = subprocess.check_output(['javap', '-classpath', str(jar), 'globus.glmap.GLMapDrawObject$UpdateCompletion'], text=True)
         assert 'onComplete(int)' in callback
     print('PASS selected Android/Apple SDK APIs and recorded revisions')

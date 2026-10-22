@@ -6,7 +6,7 @@ val glmapApiKey: String = rootProject.file("example/config/local.json").takeIf {
 android {
     namespace = "software.globus.glmap.demo"
     compileSdk = 37
-    ndkVersion = "29.0.14206865"
+    ndkVersion = "30.0.16248370"
     defaultConfig {
         applicationId = "software.globus.glmap.demo"
         minSdk = 24; targetSdk = 37

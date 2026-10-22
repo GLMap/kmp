@@ -13,7 +13,7 @@ add to `commonMain`:
 implementation("globus:glroute-kmp:0.1.0-beta.1")
 ```
 
-Requires Kotlin 2.4.20, Android API 24+ or iOS 16.4+, and native GLRoute 2.2.0.
+Requires Kotlin 2.4.20, Android API 24+ or iOS 16.4+, and native GLRoute 2.3.1.
 On iOS, link `GLMapCore` with its resources and the `GLRoute` SwiftPM product.
 
 ## Build a road route

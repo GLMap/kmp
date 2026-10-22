@@ -113,9 +113,9 @@ private class AndroidMapController(private val context: Context, withFixture: Bo
     private fun submit(layer: Layer, objects: GLMapVectorObjectList, parsed: GLMapVectorCascadeStyle): Deferred<UpdateResult> = request { done ->
         layer.native.setVectorObjects(objects,parsed) { result ->
             val value = when(result) {
-                GLMapVectorLayer.UpdateResult.Ready -> UpdateResult.Ready
-                GLMapVectorLayer.UpdateResult.Superseded -> UpdateResult.Superseded
-                GLMapVectorLayer.UpdateResult.Cancelled -> UpdateResult.Cancelled
+                GLMapDrawObject.UpdateResult.Ready -> UpdateResult.Ready
+                GLMapDrawObject.UpdateResult.Superseded -> UpdateResult.Superseded
+                GLMapDrawObject.UpdateResult.Cancelled -> UpdateResult.Cancelled
                 else -> UpdateResult.Failed
             }
             main.post { done(value) }
@@ -441,7 +441,8 @@ private class AndroidMapController(private val context: Context, withFixture: Bo
         val circleStyle = checkNotNull(GLMapVectorCascadeStyle.createStyle("area{width:1pt;fill-color:#3D99FA26;color:#3D99FA66;}"))
         val circle = GLMapVectorLayer(drawOrder - 1).apply {
             setTransformMode(GLMapDrawable.TransformMode.Custom)
-            setVectorObject(GLMapVectorObject.createPolygon(arrayOf(points)), circleStyle, null); isHidden = true
+            val polygon = GeometryBuilder().use { builder -> builder.beginPolygon(); builder.addLine(points); checkNotNull(builder.build()) }
+            setVectorObject(polygon, circleStyle, null); isHidden = true
         }
         val owned = object : Owned(listOf(circle, image), mutableListOf(circleStyle)) {}
         var first = true

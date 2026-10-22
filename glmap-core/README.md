@@ -13,7 +13,7 @@ then add this dependency to `commonMain`:
 implementation("globus:glmap-core-kmp:0.1.0-beta.1")
 ```
 
-Requires Kotlin 2.4.20, Android API 24+ or iOS 16.4+, and native GLMap Core 2.2.0.
+Requires Kotlin 2.4.20, Android API 24+ or iOS 16.4+, and native GLMap Core 2.3.1.
 On iOS, include the `GLMapCore` SwiftPM product and its resource bundle.
 
 ## Initialize and register data

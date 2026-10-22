@@ -157,9 +157,9 @@ private class IosMapController(withFixture: Boolean) : MapController() {
     private fun submit(entry: Layer, objects: GLMapVectorObjectArray, parsed: GLMapVectorCascadeStyle): Deferred<UpdateResult> = request { done ->
         entry.native.setVectorObjects(objects,withStyle = parsed,completion = { outcome ->
             done(when(outcome) {
-                GLMapVectorLayerUpdateResultReady -> UpdateResult.Ready
-                GLMapVectorLayerUpdateResultSuperseded -> UpdateResult.Superseded
-                GLMapVectorLayerUpdateResultCancelled -> UpdateResult.Cancelled
+                GLMapDrawObjectUpdateResult.GLMapDrawObjectUpdateResult_Ready -> UpdateResult.Ready
+                GLMapDrawObjectUpdateResult.GLMapDrawObjectUpdateResult_Superseded -> UpdateResult.Superseded
+                GLMapDrawObjectUpdateResult.GLMapDrawObjectUpdateResult_Cancelled -> UpdateResult.Cancelled
                 else -> UpdateResult.Failed
             })
         })
@@ -180,11 +180,12 @@ private class IosMapController(withFixture: Boolean) : MapController() {
     override fun nativePickFeature(id: Int, tap: MapTap, tolerance: Double): String? {
         val objects = checkNotNull(layers[id]) { "layer_removed" }.objects ?: return null
         val target = map.makeMapPointFromDisplayPoint(display(tap))
-        val distance = map.makeMapPointFromDisplayDelta(CGPointMake(0.0, tolerance)).useContents { kotlin.math.hypot(x, y) }
+        val state = map.state
         return memScoped {
             val nearest = alloc<GLMapPoint>()
             (0uL until objects.count).firstNotNullOfOrNull { index ->
-                objects.objectAtIndex(index).takeIf { it.findNearestPoint(nearest.ptr, target, distance) }?.asGeoJSON()
+                target.place(nearest.ptr)
+                objects.objectAtIndex(index).takeIf { state.findNearestPoint(nearest.ptr, nearObject = it, maxDistance = tolerance) }?.asGeoJSON()
             }
         }
     }

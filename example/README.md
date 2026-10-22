@@ -8,9 +8,9 @@ For installation, launch commands and API keys, see
 
 ## Native SDK release
 
-Both hosts use the published GLMap **2.2.0** artifacts. Android resolves them
+Both hosts use the published GLMap **2.3.1** artifacts. Android resolves them
 through the shared modules' Maven dependencies; the iOS host pins exact SwiftPM
-version `2.2.0`. Run `python3 scripts/fetch-apple-sdk.py` from the repository root
+version `2.3.1`. Run `python3 scripts/fetch-apple-sdk.py` from the repository root
 before rebuilding the Kotlin/Native frameworks, then regenerate the host with
 `python3 scripts/generate-ios-project.py`. The fetched headers and the frameworks
 linked by Xcode must be from the same release.
