@@ -8,6 +8,8 @@
   points, as on Android, instead of the per-object test deprecated in 2.3.0.
 - Build the Android user-location circle with `GeometryBuilder` and pass typed
   route lines to line arrows instead of APIs deprecated in 2.3.0.
+- Fix an abort of debuggable Android apps when markers are removed while the
+  marker layer is still loading them.
 - Kotlin wrapper versions remain `0.1.0-beta.1`, independent of the native SDK.
 
 ## Native SDK 2.2.0 release update

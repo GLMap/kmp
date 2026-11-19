@@ -338,7 +338,8 @@ private class AndroidMapController(private val context: Context, withFixture: Bo
         val text = GLMapVectorStyle.createStyle(style.textStyle) ?: throw SdkException(SdkError.InvalidArgument, "text style")
         keep.add(text)
         styles.setDataCallback(object : GLMapMarkerStyleCollectionDataCallback() {
-            override fun getLocation(marker: Any) = (marker as GLMapVectorObject).point()
+            // A layer removed while it still loads asks closed markers for their point; they have none.
+            override fun getLocation(marker: Any): MapPoint? = (marker as GLMapVectorObject).point()
             override fun fillData(marker: Any, data: Long) {
                 GLMapMarkerStyleCollection.setMarkerStyle(data, 0)
                 val key = style.nameKey ?: return
